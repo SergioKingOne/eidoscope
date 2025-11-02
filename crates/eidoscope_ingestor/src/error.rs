@@ -48,45 +48,74 @@ pub enum IngestorError {
 pub enum ValidationError {
     /// A required field was empty or contained only whitespace.
     #[error("Field '{field}' cannot be empty")]
-    EmptyValue { field: String },
+    EmptyValue {
+        /// The name of the field that was empty.
+        field: String,
+    },
 
     /// A string value exceeded its maximum allowed length.
     #[error("Field '{field}' exceeds maximum length of {max_length} (got {actual_length})")]
     TooLong {
+        /// The name of the field that exceeded the maximum length.
         field: String,
+        /// The maximum allowed length.
         max_length: usize,
+        /// The actual length of the value.
         actual_length: usize,
     },
 
     /// A value failed format validation (e.g., invalid characters, pattern mismatch).
     #[error("Field '{field}' has invalid format: {reason}")]
-    InvalidFormat { field: String, reason: String },
+    InvalidFormat {
+        /// The name of the field with invalid format.
+        field: String,
+        /// Description of why the format is invalid.
+        reason: String,
+    },
 
     /// A numeric value was out of acceptable range.
     #[error("Field '{field}' value {value} is out of range [{min}, {max}]")]
     OutOfRange {
+        /// The name of the field with out-of-range value.
         field: String,
+        /// The actual value that was out of range.
         value: i64,
+        /// The minimum acceptable value.
         min: i64,
+        /// The maximum acceptable value.
         max: i64,
     },
 
     /// A timestamp value was invalid (e.g., in the future when it shouldn't be).
     #[error("Invalid timestamp for '{field}': {reason}")]
-    InvalidTimestamp { field: String, reason: String },
+    InvalidTimestamp {
+        /// The name of the timestamp field.
+        field: String,
+        /// Description of why the timestamp is invalid.
+        reason: String,
+    },
 }
 
 /// Errors that occur during message processing.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ProcessingError {
     /// Processing was aborted by the processor.
-    Aborted { reason: String },
+    Aborted {
+        /// The reason processing was aborted.
+        reason: String,
+    },
 
     /// Processing failed due to an internal error.
-    Failed { reason: String },
+    Failed {
+        /// The reason processing failed.
+        reason: String,
+    },
 
     /// The processor encountered an unexpected state.
-    UnexpectedState { message: String },
+    UnexpectedState {
+        /// Description of the unexpected state.
+        message: String,
+    },
 }
 
 impl fmt::Display for ProcessingError {
@@ -105,16 +134,30 @@ impl std::error::Error for ProcessingError {}
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SinkError {
     /// The sink is currently unavailable.
-    Unavailable { sink_name: String },
+    Unavailable {
+        /// The name of the unavailable sink.
+        sink_name: String,
+    },
 
     /// The sink rejected the message.
-    Rejected { reason: String },
+    Rejected {
+        /// The reason the message was rejected.
+        reason: String,
+    },
 
     /// The sink encountered an internal error.
-    InternalError { details: String },
+    InternalError {
+        /// Details about the internal error.
+        details: String,
+    },
 
     /// The sink's capacity was exceeded.
-    CapacityExceeded { current: usize, maximum: usize },
+    CapacityExceeded {
+        /// The current number of items in the sink.
+        current: usize,
+        /// The maximum capacity of the sink.
+        maximum: usize,
+    },
 }
 
 impl fmt::Display for SinkError {
