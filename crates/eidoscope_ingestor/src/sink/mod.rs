@@ -103,11 +103,13 @@ pub trait Sink: Send + Sync {
 
 /// A type-erased, boxed sink.
 ///
-/// This allows for dynamic dispatch and heterogeneous collections of sinks.
+/// Note: With RPITIT (Return Position Impl Trait In Traits), the `Sink` trait
+/// is not dyn-compatible, so this type cannot be directly instantiated. Use concrete
+/// sink types or generics instead.
 ///
 /// # Examples
 ///
-/// ```
+/// ```compile_fail
 /// use eidoscope_ingestor::sink::{BoxedSink, TracingSink};
 ///
 /// let sink: BoxedSink = Box::new(TracingSink::new());

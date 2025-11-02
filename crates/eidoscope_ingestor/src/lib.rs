@@ -37,7 +37,8 @@
 //!     sink::TracingSink,
 //! };
 //!
-//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! // Create a simple pipeline
 //! let pipeline = PipelineBuilder::new()
 //!     .with_processor(PassthroughProcessor)
@@ -47,7 +48,7 @@
 //! // Ingest a message
 //! let source = SourceName::new("my-app")?;
 //! let message = GenericMessage::new(b"Hello, world!".to_vec(), source);
-//! pipeline.ingest(Box::new(message))?;
+//! pipeline.ingest(Box::new(message)).await?;
 //! # Ok(())
 //! # }
 //! ```
@@ -109,36 +110,19 @@
 //! The library provides both synchronous and asynchronous APIs, allowing
 //! use in any context without forcing a specific runtime.
 //!
-//! Synchronous:
+//! Example usage:
 //! ```
 //! use eidoscope_ingestor::processor::Processor;
 //! # use eidoscope_ingestor::processor::PassthroughProcessor;
 //! # use eidoscope_ingestor::message::{GenericMessage, SourceName};
 //!
-//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
-//! let processor = PassthroughProcessor;
-//! # let source = SourceName::new("test")?;
-//! # let message = GenericMessage::new(b"data".to_vec(), source);
-//! let decision = processor.process(&message)?;
-//! # Ok(())
-//! # }
-//! ```
-//!
-//! Asynchronous (with `async` feature):
-//! ```
-//! # #[cfg(feature = "async")]
-//! # {
-//! use eidoscope_ingestor::processor::AsyncProcessor;
-//! # use eidoscope_ingestor::processor::PassthroughProcessor;
-//! # use eidoscope_ingestor::message::{GenericMessage, SourceName};
-//!
-//! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! let processor = PassthroughProcessor;
 //! # let source = SourceName::new("test")?;
 //! # let message = GenericMessage::new(b"data".to_vec(), source);
 //! let decision = processor.process(&message).await?;
 //! # Ok(())
-//! # }
 //! # }
 //! ```
 

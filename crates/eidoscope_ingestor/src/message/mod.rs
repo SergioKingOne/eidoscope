@@ -99,7 +99,7 @@ pub trait Message: Debug + Send + Sync {
 /// # Examples
 ///
 /// ```
-/// use eidoscope_ingestor::message::{GenericMessage, MessageId, SourceName};
+/// use eidoscope_ingestor::message::{GenericMessage, Message, MessageId, SourceName};
 ///
 /// let message = GenericMessage::new(
 ///     b"Hello, world!".to_vec(),

@@ -97,11 +97,13 @@ pub trait Processor: Send + Sync {
 
 /// A type-erased, boxed processor.
 ///
-/// This allows for dynamic dispatch and heterogeneous collections of processors.
+/// Note: With RPITIT (Return Position Impl Trait In Traits), the `Processor` trait
+/// is not dyn-compatible, so this type cannot be directly instantiated. Use concrete
+/// processor types or generics instead.
 ///
 /// # Examples
 ///
-/// ```
+/// ```compile_fail
 /// use eidoscope_ingestor::processor::{BoxedProcessor, PassthroughProcessor};
 ///
 /// let processor: BoxedProcessor = Box::new(PassthroughProcessor);
